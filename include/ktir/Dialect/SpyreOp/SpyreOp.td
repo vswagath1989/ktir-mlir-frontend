@@ -252,9 +252,7 @@ def Spyre_Compare : SpyreOp_IntrinsicOp<
     AnyTypeOf<[F16, SpyreOp_DF16, F32]>:$lhs,
     AnyTypeOf<[F16, SpyreOp_DF16, F32]>:$rhs,
     SpyreOp_ComparePredicateAttr:$predicate
-  ),
-  (outs AnyTypeOf<[F16, SpyreOp_DF16, F32]>:$result),
-  [SameOperandsAndResultType]
+  )
 > {
   let summary = "Compares two values, giving one where the predicate holds";
 
