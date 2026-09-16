@@ -61,4 +61,30 @@ def SpyreOp_ReductionScope : I32EnumAttr<
   let genSpecializedAttr = 0;
 }
 
+//===----------------------------------------------------------------------===//
+// compare enums
+//===----------------------------------------------------------------------===//
+
+// Spelled as the bundle spells them, so a predicate here and the operation it
+// stands for downstream read the same.
+def SpyreOp_ComparePredicate_Equal        : I32EnumAttrCase<"Equal",        0, "equal">;
+def SpyreOp_ComparePredicate_NotEqual     : I32EnumAttrCase<"NotEqual",     1, "notequal">;
+def SpyreOp_ComparePredicate_GreaterThan  : I32EnumAttrCase<"GreaterThan",  2, "greaterthan">;
+def SpyreOp_ComparePredicate_GreaterEqual : I32EnumAttrCase<"GreaterEqual", 3, "greaterequal">;
+def SpyreOp_ComparePredicate_LesserThan   : I32EnumAttrCase<"LesserThan",   4, "lesserthan">;
+def SpyreOp_ComparePredicate_LesserEqual  : I32EnumAttrCase<"LesserEqual",  5, "lesserequal">;
+
+def SpyreOp_ComparePredicate : I32EnumAttr<
+    "ComparePredicate",
+    "comparison predicate",
+    [SpyreOp_ComparePredicate_Equal,
+     SpyreOp_ComparePredicate_NotEqual,
+     SpyreOp_ComparePredicate_GreaterThan,
+     SpyreOp_ComparePredicate_GreaterEqual,
+     SpyreOp_ComparePredicate_LesserThan,
+     SpyreOp_ComparePredicate_LesserEqual]> {
+  let cppNamespace = "::mlir::spyreop";
+  let genSpecializedAttr = 0;
+}
+
 #endif  // KTIR_DIALECT_SPYREOP_SPYREOPENUMS_TD

@@ -246,6 +246,52 @@ def Spyre_Sqrt : SpyreOp_IntrinsicOp<
   let summary = "Computes the square root";
 }
 
+def Spyre_Compare : SpyreOp_IntrinsicOp<
+  "compare",
+  (ins
+    AnyTypeOf<[F16, SpyreOp_DF16, F32]>:$lhs,
+    AnyTypeOf<[F16, SpyreOp_DF16, F32]>:$rhs,
+    SpyreOp_ComparePredicateAttr:$predicate
+  )
+> {
+  let summary = "Compares two values, giving one where the predicate holds";
+
+  let description = [{
+    Gives one where `predicate` holds between `lhs` and `rhs`, and zero where it
+    does not.
+
+    The answer comes in the width compared rather than as a boolean, which is how
+    `spyreop.select` takes its condition. Every predicate is ordered in the
+    IEEE-754 sense: the result is zero if either operand is NaN, `notequal`
+    included. Infinities compare as IEEE-754 says.
+  }];
+
+  let assemblyFormat = [{
+    $predicate $lhs `,` $rhs attr-dict `:` type($result)
+  }];
+}
+
+def Spyre_Select : SpyreOp_IntrinsicOp<
+  "select",
+  (ins
+    AnyTypeOf<[F16, SpyreOp_DF16, F32]>:$condition,
+    AnyTypeOf<[F16, SpyreOp_DF16, F32]>:$true_value,
+    AnyTypeOf<[F16, SpyreOp_DF16, F32]>:$false_value
+  )
+> {
+  let summary = "Takes one of two values, chosen by a condition";
+
+  let description = [{
+    Takes `true_value` where `condition` is not zero and `false_value` where it is.
+
+    All three and the result share one type, which `SameOperandsAndResultType`
+    enforces: the condition is an ordinary value of the width being selected, not
+    a boolean. The selection itself wants one bit per lane, and making that is the
+    device's business -- it compares the condition against zero into a state the
+    selection then reads.
+  }];
+}
+
 // slice_reduction operates on a full stick at a time.
 def Spyre_SliceReduction : SpyreOp_Op<"slice_reduction",
     [Pure, SameOperandsAndResultType]> {
