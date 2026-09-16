@@ -65,6 +65,25 @@ func.func @exx2_fused_f32(%arg0: f32) -> !spyreop.fp32_fused {
   return %0 : !spyreop.fp32_fused
 }
 
+// The mean is taken to be zero, so only the mean of squares is accumulated.
+// CHECK-LABEL: func.func @exx2_zeromean_fused(
+// CHECK-SAME:    %[[A:.*]]: f16) -> !spyreop.fp16_fused
+func.func @exx2_zeromean_fused(%arg0: f16) -> !spyreop.fp16_fused {
+  // CHECK:         %[[R:.*]] = spyreop.exx2_zeromean_fused %[[A]] : f16 -> !spyreop.fp16_fused
+  %0 = spyreop.exx2_zeromean_fused %arg0 : f16 -> !spyreop.fp16_fused
+  // CHECK:         return %[[R]] : !spyreop.fp16_fused
+  return %0 : !spyreop.fp16_fused
+}
+
+// CHECK-LABEL: func.func @exx2_zeromean_fused_f32(
+// CHECK-SAME:    %[[A:.*]]: f32) -> !spyreop.fp32_fused
+func.func @exx2_zeromean_fused_f32(%arg0: f32) -> !spyreop.fp32_fused {
+  // CHECK:         %[[R:.*]] = spyreop.exx2_zeromean_fused %[[A]] : f32 -> !spyreop.fp32_fused
+  %0 = spyreop.exx2_zeromean_fused %arg0 : f32 -> !spyreop.fp32_fused
+  // CHECK:         return %[[R]] : !spyreop.fp32_fused
+  return %0 : !spyreop.fp32_fused
+}
+
 // CHECK-LABEL: func.func @gelu(
 // CHECK-SAME:    %[[A:.*]]: !spyreop.df16) -> !spyreop.df16
 func.func @gelu(%arg0: !spyreop.df16) -> !spyreop.df16 {

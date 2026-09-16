@@ -109,6 +109,23 @@ def Spyre_Exx2Fused : SpyreOp_IntrinsicOp<
   }];
 }
 
+// RMSNorm normalises by the root of the mean of squares alone, so the mean is known
+// to be zero and there is nothing to accumulate for it. The result is still a pair,
+// with that zero in it: what reads a pair reads both halves, and the scaling then
+// takes the mean of squares less a mean of nothing.
+def Spyre_Exx2ZeromeanFused : SpyreOp_IntrinsicOp<
+  "exx2_zeromean_fused",
+  (ins AnyTypeOf<[F16, SpyreOp_DF16, F32]>:$operand),
+  (outs SpyreOp_AnyFused:$result),
+  [DeclareOpInterfaceMethods<InferTypeOpInterface>]
+> {
+  let summary = "Computes a mean of squares fused with a mean taken to be zero";
+
+  let assemblyFormat = [{
+    $operand attr-dict `:` type($operand) `->` type($result)
+  }];
+}
+
 def Spyre_GeLU : SpyreOp_IntrinsicOp<
   "gelu", 
   (ins AnyTypeOf<[F16, SpyreOp_DF16]>:$operand)

@@ -75,6 +75,16 @@ LogicalResult Exx2Fused::inferReturnTypes(
   return success();
 }
 
+LogicalResult Exx2ZeromeanFused::inferReturnTypes(
+    MLIRContext* context, std::optional<Location> location, ValueRange operands,
+    DictionaryAttr attributes, OpaqueProperties properties, RegionRange regions,
+    SmallVectorImpl<Type>& inferred) {
+  const Type fused = fusedPairOf(operands.front().getType());
+  if (!fused) return failure();
+  inferred.push_back(fused);
+  return success();
+}
+
 LogicalResult LayerNormScaleFused::inferReturnTypes(
     MLIRContext* context, std::optional<Location> location, ValueRange operands,
     DictionaryAttr attributes, OpaqueProperties properties, RegionRange regions,
