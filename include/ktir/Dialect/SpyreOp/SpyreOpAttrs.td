@@ -46,4 +46,8 @@ def SpyreOp_ReductionScopeAttr : EnumAttr<SpyreOp_Dialect, SpyreOp_ReductionScop
   let assemblyFormat = "`<` $value `>`";
 }
 
+def SpyreOp_ComparePredicateAttr : EnumAttr<SpyreOp_Dialect, SpyreOp_ComparePredicate, "compare_predicate"> {
+  let assemblyFormat = "`<` $value `>`";
+}
+
 #endif // KTIR_DIALECT_SPYREOP_SPYREOPATTRS_TD
